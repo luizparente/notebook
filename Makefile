@@ -1,9 +1,6 @@
 # Makefile for Notebook Application
 # Follows professional C project build structure
 
-# Disable parallel builds to ensure proper directory creation
-.NOTPARALLEL:
-
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11 -Iinclude `pkg-config --cflags gtk+-3.0 gtksourceview-4`
@@ -33,23 +30,32 @@ SOURCES = $(SRC_DIR)/main.c \
           $(SRC_DIR)/ui/main_window.c
 
 # Object files
-OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJECTS = $(OBJ_DIR)/main.o \
+          $(OBJ_DIR)/core/document.o \
+          $(OBJ_DIR)/core/application.o \
+          $(OBJ_DIR)/io/file_operations.o \
+          $(OBJ_DIR)/clipboard/clipboard_operations.o \
+          $(OBJ_DIR)/theme/theme_manager.o \
+          $(OBJ_DIR)/ui/main_window.o
 
 # Default target
 .PHONY: all
 all: CFLAGS += $(DEBUG_FLAGS)
-all: directories $(TARGET)
+all: $(TARGET)
 
 # Release target
 .PHONY: release
 release:
 	@$(MAKE) clean
-	@$(MAKE) CFLAGS="$(CFLAGS) $(RELEASE_FLAGS)" directories $(TARGET)
+	@$(MAKE) CFLAGS="$(CFLAGS) $(RELEASE_FLAGS)" build-release
 
-# Create all necessary directories first
-.PHONY: directories
-directories:
+.PHONY: build-release
+build-release: create-dirs $(TARGET)
+
+.PHONY: create-dirs
+create-dirs:
 	@mkdir -p $(BIN_DIR)
+	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/core
 	@mkdir -p $(OBJ_DIR)/io
 	@mkdir -p $(OBJ_DIR)/clipboard
@@ -61,8 +67,33 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 	@echo "Build complete: $(TARGET)"
 
-# Compile source files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# Compile individual source files
+$(OBJ_DIR)/main.o: $(SRC_DIR)/main.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/core/document.o: $(SRC_DIR)/core/document.c
+	@mkdir -p $(OBJ_DIR)/core
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/core/application.o: $(SRC_DIR)/core/application.c
+	@mkdir -p $(OBJ_DIR)/core
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/io/file_operations.o: $(SRC_DIR)/io/file_operations.c
+	@mkdir -p $(OBJ_DIR)/io
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/clipboard/clipboard_operations.o: $(SRC_DIR)/clipboard/clipboard_operations.c
+	@mkdir -p $(OBJ_DIR)/clipboard
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/theme/theme_manager.o: $(SRC_DIR)/theme/theme_manager.c
+	@mkdir -p $(OBJ_DIR)/theme
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/ui/main_window.o: $(SRC_DIR)/ui/main_window.c
+	@mkdir -p $(OBJ_DIR)/ui
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean build artifacts
@@ -80,7 +111,7 @@ run: all
 .PHONY: install
 install:
 	@$(MAKE) clean
-	@$(MAKE) CFLAGS="$(CFLAGS) $(RELEASE_FLAGS)" directories $(TARGET)
+	@$(MAKE) CFLAGS="$(CFLAGS) $(RELEASE_FLAGS)" build-release
 	install -d $(DESTDIR)/usr/local/bin
 	install -m 755 $(TARGET) $(DESTDIR)/usr/local/bin/notebook
 
