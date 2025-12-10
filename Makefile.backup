@@ -1,21 +1,10 @@
 # Makefile for Notebook Application
-# Simple, robust, and cross-platform compatible
-
-# Project paths
-PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-INCLUDE_DIR := $(PROJECT_ROOT)/include
-
-# Dependencies via pkg-config
-PKG_CONFIG ?= pkg-config
-PKG_MODULES := gtk+-3.0 gtksourceview-4
-PKG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(PKG_MODULES))
-PKG_LIBS := $(shell $(PKG_CONFIG) --libs $(PKG_MODULES))
+# Follows professional C project build structure
 
 # Compiler and flags
 CC = gcc
-CFLAGS := -Wall -Wextra -std=c11
-CPPFLAGS := -I$(INCLUDE_DIR) $(PKG_CFLAGS)
-LDFLAGS := $(PKG_LIBS)
+CFLAGS = -Wall -Wextra -std=c11 -Iinclude `pkg-config --cflags gtk+-3.0 gtksourceview-4`
+LDFLAGS = `pkg-config --libs gtk+-3.0 gtksourceview-4`
 
 # Debug and release flags
 DEBUG_FLAGS = -g -O0 -DDEBUG
@@ -23,6 +12,7 @@ RELEASE_FLAGS = -O2 -DNDEBUG
 
 # Directories
 SRC_DIR = src
+INCLUDE_DIR = include
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/obj
 BIN_DIR = $(BUILD_DIR)/bin
@@ -31,15 +21,16 @@ BIN_DIR = $(BUILD_DIR)/bin
 TARGET = $(BIN_DIR)/notebook
 
 # Source files
-SOURCES = $(wildcard $(SRC_DIR)/*.c) \
-          $(wildcard $(SRC_DIR)/core/*.c) \
-          $(wildcard $(SRC_DIR)/io/*.c) \
-          $(wildcard $(SRC_DIR)/clipboard/*.c) \
-          $(wildcard $(SRC_DIR)/theme/*.c) \
-          $(wildcard $(SRC_DIR)/ui/*.c)
+SOURCES = $(SRC_DIR)/main.c \
+          $(SRC_DIR)/core/document.c \
+          $(SRC_DIR)/core/application.c \
+          $(SRC_DIR)/io/file_operations.c \
+          $(SRC_DIR)/clipboard/clipboard_operations.c \
+          $(SRC_DIR)/theme/theme_manager.c \
+          $(SRC_DIR)/ui/main_window.c
 
 # Object files
-OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
+OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Default target
 .PHONY: all
@@ -48,19 +39,29 @@ all: $(TARGET)
 
 # Release target
 .PHONY: release
-release: clean
-	@$(MAKE) CFLAGS="$(CFLAGS) $(RELEASE_FLAGS)" CPPFLAGS="$(CPPFLAGS)" $(TARGET)
+release: CFLAGS += $(RELEASE_FLAGS)
+release: clean $(TARGET)
 
 # Link executable
-$(TARGET): $(OBJECTS)
-	@mkdir -p $(BIN_DIR)
+$(TARGET): $(OBJECTS) | $(BIN_DIR)
 	$(CC) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 	@echo "Build complete: $(TARGET)"
 
 # Compile source files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Create directories
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)/core
+	@mkdir -p $(OBJ_DIR)/io
+	@mkdir -p $(OBJ_DIR)/clipboard
+	@mkdir -p $(OBJ_DIR)/theme
+	@mkdir -p $(OBJ_DIR)/ui
+
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
 
 # Clean build artifacts
 .PHONY: clean
@@ -70,13 +71,12 @@ clean:
 
 # Run the application
 .PHONY: run
-run: all
+run: $(TARGET)
 	$(TARGET)
 
 # Install target (optional)
 .PHONY: install
-install:
-	@$(MAKE) release
+install: release
 	install -d $(DESTDIR)/usr/local/bin
 	install -m 755 $(TARGET) $(DESTDIR)/usr/local/bin/notebook
 
@@ -113,6 +113,15 @@ help:
 	@echo ""
 	@echo "Install dependencies (Arch):"
 	@echo "  sudo pacman -S gtk3 gtksourceview4 pkgconf"
-	@echo ""
-	@echo "Install dependencies (macOS with Homebrew):"
-	@echo "  brew install gtk+3 gtksourceview4 pkg-config"
+
+# Dependencies tracking
+-include $(OBJECTS:.o=.d)
+
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -MM -MT '$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$<)' $< -MF $@
+
+.PHONY: deps
+deps:
+	@echo "Generating dependency files..."
+	@$(MAKE) -s $(OBJECTS:.o=.d)
