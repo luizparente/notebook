@@ -1,6 +1,6 @@
-# Notebook - A Professional Text Editor
+# Notebook - A Minimalistic (and Vibe-Coded) Text Editor
 
-A simple yet powerful notebook clone built in C with GTK3, following SOLID principles and professional software architecture patterns.
+A simple yet powerful notebook clone built in C with GTK3.
 
 ## Features
 
@@ -14,47 +14,7 @@ A simple yet powerful notebook clone built in C with GTK3, following SOLID princ
 - 🏗️ **Professional architecture** following SOLID principles
 - 🎯 **Clean separation of concerns** with layered architecture
 
-## Screenshots
-
-### Dark Theme (Default)
-- Dark background (#1e1e1e) with light text (#d4d4d4)
-- Comfortable for extended coding/writing sessions
-
-### Light Theme
-- Clean white background with black text
-- Traditional notebook appearance
-
-## Architecture
-
-This project follows professional software engineering principles:
-
-### SOLID Principles Implementation
-
-1. **Single Responsibility Principle (SRP)**
-   - Each module handles one specific concern
-   - `document.c` - Document state management only
-   - `file_operations.c` - File I/O only
-   - `clipboard_operations.c` - Clipboard operations only
-   - `theme_manager.c` - Theme management only
-   - `main_window.c` - UI presentation only
-
-2. **Open/Closed Principle (OCP)**
-   - Theme system allows new themes to be added without modifying existing code
-   - Callback-based event system allows extension without modification
-
-3. **Liskov Substitution Principle (LSP)**
-   - Interface-based design with function pointers
-   - Modules can be swapped with compatible implementations
-
-4. **Interface Segregation Principle (ISP)**
-   - Separate interfaces for different concerns (file ops, clipboard, theme)
-   - Clients only depend on interfaces they use
-
-5. **Dependency Inversion Principle (DIP)**
-   - High-level modules (Application) depend on abstractions
-   - Low-level modules implement those abstractions
-
-### Project Structure
+## Project Structure
 
 ```
 notebook/
@@ -76,37 +36,6 @@ notebook/
 │   └── bin/           # Executable
 ├── Makefile           # Build system
 └── README.md          # This file
-```
-
-### Architectural Layers
-
-```
-┌─────────────────────────────────────────┐
-│          UI Layer (GTK)                 │
-│  - Main Window                          │
-│  - Event Handling                       │
-│  - User Interaction                     │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│      Application Layer                  │
-│  - Coordinates subsystems               │
-│  - Business workflow                    │
-│  - Event callbacks                      │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│      Domain Layer                       │
-│  - Document model                       │
-│  - Business rules                       │
-└─────────────────────────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│   Infrastructure Layer                  │
-│  - File I/O                            │
-│  - Clipboard                           │
-│  - Theme Management                    │
-└─────────────────────────────────────────┘
 ```
 
 ## Requirements
@@ -195,7 +124,7 @@ Or if installed:
 notebook
 ```
 
-### Keyboard Shortcuts
+### Features
 
 All operations are accessible via the menu bar:
 
@@ -218,67 +147,12 @@ All operations are accessible via the menu bar:
 **Help Menu:**
 - About - Show application information
 
-## Code Quality
-
-### Standards Compliance
-- C11 standard
-- POSIX compliance for file operations
-- GTK3 best practices
-
-### Compiler Warnings
-Built with strict warnings enabled:
-- `-Wall` - All common warnings
-- `-Wextra` - Extra warnings
-
-### Memory Management
-- Proper allocation/deallocation patterns
-- No memory leaks (verified with valgrind)
-- Safe string handling
-
-### Error Handling
-- Comprehensive error checking
-- User-friendly error messages
-- Graceful degradation
-
-## Design Patterns Used
-
-1. **MVC (Model-View-Controller)**
-   - Model: Document
-   - View: MainWindow
-   - Controller: Application
-
-2. **Observer Pattern**
-   - Theme change callbacks
-   - Document modification callbacks
-
-3. **Facade Pattern**
-   - Application acts as facade for subsystems
-
-4. **Strategy Pattern**
-   - Pluggable theme system
-
-## Testing
-
-Manual testing checklist:
-
-- [ ] Create new document
-- [ ] Open existing file
-- [ ] Save document
-- [ ] Save As with new name
-- [ ] Detect unsaved changes
-- [ ] Cut/Copy/Paste operations
-- [ ] Select All functionality
-- [ ] Toggle between themes
-- [ ] Confirm dialog on quit with unsaved changes
-- [ ] Error handling for file operations
-
 ## Future Enhancements
 
 Potential features for future versions:
 
 - [ ] Undo/Redo functionality
 - [ ] Find and Replace
-- [x] Line numbers (implemented)
 - [ ] Syntax highlighting (GtkSourceView ready)
 - [ ] Multiple document tabs
 - [ ] Recent files list
@@ -288,27 +162,8 @@ Potential features for future versions:
 - [ ] Keyboard shortcuts
 - [ ] Configuration file support
 
-## Contributing
-
-When contributing to this project, please maintain:
-
-1. **SOLID principles** in all code
-2. **Consistent coding style** (K&R style)
-3. **Comprehensive documentation** in headers
-4. **Error handling** for all operations
-5. **Memory safety** - no leaks, proper cleanup
-
 ## License
 
-This is a demonstration project showcasing professional C architecture.
+This is a demonstration project showcasing the implementation of an AI-first C application.
+
 Feel free to use, modify, and learn from this code.
-
-## Author
-
-Built with attention to software architecture and design principles.
-
-## Acknowledgments
-
-- GTK+ Team for the excellent GUI toolkit
-- The C programming community for best practices and patterns
-- Software engineering principles from Uncle Bob Martin and others
