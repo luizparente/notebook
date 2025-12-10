@@ -1,0 +1,52 @@
+# Build artifacts
+build/
+*.o
+*.d
+*.out
+*.exe
+
+# Executable
+notebook
+
+# Editor files
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+.project
+.cproject
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.bak
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Core dumps
+core
+core.*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
+
+# Package files
+*.tar.gz
+*.zip
+*.deb
+*.rpm

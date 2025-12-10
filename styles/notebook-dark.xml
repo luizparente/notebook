@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Notebook Dark Theme - Custom GtkSourceView Style Scheme
+  Current line background: 5% lighter than editor background
+-->
+<style-scheme id="notebook-dark" _name="Notebook Dark" version="1.0">
+  <author>Notebook Application</author>
+  <_description>Dark theme with optimized current line highlighting</_description>
+
+  <!-- Color Palette -->
+  <color name="bg"                value="#1e1e1e"/>
+  <color name="current-line"      value="#282828"/>  <!-- 5% lighter than bg -->
+  <color name="fg"                value="#d4d4d4"/>
+  <color name="selection"         value="#264f78"/>
+  <color name="line-numbers-bg"   value="#252526"/>
+  <color name="line-numbers-fg"   value="#858585"/>
+  <color name="cursor"            value="#aeafad"/>
+
+  <!-- Global Settings -->
+  <style name="text"                        foreground="fg" background="bg"/>
+  <style name="cursor"                      foreground="cursor"/>
+  <style name="current-line"                background="current-line"/>
+  <style name="line-numbers"                foreground="line-numbers-fg" background="line-numbers-bg"/>
+  <style name="selection"                   foreground="#ffffff" background="selection"/>
+
+  <!-- Bracket Matching -->
+  <style name="bracket-match"               foreground="fg" background="selection" bold="true"/>
+  <style name="bracket-mismatch"            foreground="#f14c4c" background="bg" bold="true"/>
+
+  <!-- Search -->
+  <style name="search-match"                background="#613a00"/>
+
+  <!-- Comments -->
+  <style name="def:comment"                 foreground="#6a9955" italic="true"/>
+  <style name="def:shebang"                 foreground="#6a9955" italic="true"/>
+  <style name="def:doc-comment-element"     foreground="#6a9955" italic="true"/>
+
+  <!-- Constants -->
+  <style name="def:constant"                foreground="#569cd6"/>
+  <style name="def:string"                  foreground="#ce9178"/>
+  <style name="def:special-char"            foreground="#d7ba7d"/>
+  <style name="def:special-constant"        foreground="#569cd6" bold="true"/>
+  <style name="def:number"                  foreground="#b5cea8"/>
+  <style name="def:floating-point"          foreground="#b5cea8"/>
+  <style name="def:boolean"                 foreground="#569cd6"/>
+
+  <!-- Identifiers -->
+  <style name="def:identifier"              foreground="#9cdcfe"/>
+  <style name="def:function"                foreground="#dcdcaa"/>
+  <style name="def:builtin"                 foreground="#4ec9b0"/>
+
+  <!-- Statements -->
+  <style name="def:statement"               foreground="#c586c0"/>
+  <style name="def:keyword"                 foreground="#569cd6"/>
+  <style name="def:operator"                foreground="#d4d4d4"/>
+
+  <!-- Types -->
+  <style name="def:type"                    foreground="#4ec9b0"/>
+  <style name="def:preprocessor"            foreground="#c586c0"/>
+
+  <!-- Markup -->
+  <style name="def:emphasis"                italic="true"/>
+  <style name="def:strong-emphasis"         bold="true"/>
+  <style name="def:heading"                 foreground="#569cd6" bold="true"/>
+
+  <!-- Errors -->
+  <style name="def:error"                   foreground="#f14c4c" underline="true"/>
+  <style name="def:warning"                 foreground="#cca700" underline="true"/>
+  <style name="def:note"                    foreground="#3794ff"/>
+
+  <!-- Others -->
+  <style name="def:underlined"              underline="single"/>
+  <style name="def:net-address"            foreground="#3794ff" underline="true"/>
+</style-scheme>
