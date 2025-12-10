@@ -50,3 +50,14 @@ core.*
 *.zip
 *.deb
 *.rpm
+
+# Release artifacts
+dist/
+AppDir/
+*.AppImage
+*.dmg
+Notebook.app/
+
+# Build tools
+linuxdeploy-x86_64.AppImage
+linuxdeploy-plugin-gtk.sh

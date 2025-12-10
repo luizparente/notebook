@@ -1,6 +1,6 @@
 # Notebook - A Minimalistic (and Vibe-Coded) Text Editor
 
-A simple yet powerful notebook clone built in C with GTK3.
+A simple yet powerful notepad "clone" built in C with GTK3.
 
 ## Features
 
@@ -69,6 +69,8 @@ sudo pacman -S base-devel gtk3 gtksourceview4 pkgconf
 ```bash
 brew install gtk+3 gtksourceview4 pkg-config
 ```
+
+**Note:** If you don't want to install dependencies, download pre-built binaries from [Releases](../../releases).
 
 ## Building
 
@@ -146,6 +148,10 @@ All operations are accessible via the menu bar:
 
 **Help Menu:**
 - About - Show application information
+
+## Automated Releases
+
+This project uses GitHub Actions to automatically build and release binaries for every commit to `master`.
 
 ## Future Enhancements
 
