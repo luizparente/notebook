@@ -1,5 +1,4 @@
 # Makefile for Notebook Application
-# Follows professional C project build structure
 
 # Compiler and flags
 CC = gcc
